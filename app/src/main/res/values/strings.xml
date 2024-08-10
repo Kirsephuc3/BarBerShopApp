@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">BarBerShopApp</string>
+    <string name="tittle_slider_1">ĐẶT LỊCH NHANH CHÓNG</string>
+    <string name="tittle_slider_2">ƯU ĐÃI HẤP DẪN</string>
+    <string name="tittle_slider_3">DỊCH VỤ 5 SAO</string>
+    <string name="text_body_1">Đặt lịch giữ chỗ chỉ với 30 giây</string>
+    <string name="text_body_2">Quà tặng hấp dẫn cập nhật liên tục</string>
+    <string name="text_body_3">Dịch vụ phù hợp với mọi lứa tuổi</string>
+    <string name="title_activity_auth_page">AuthPage</string>
+    <string name="title_activity_test">test</string>
+    <string name="title_activity_tesst">tesst</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_login_page">LoginPage</string>
+    <string name ="hello">BarBerShop</string>
+    <string name="create_account">Create An Account </string>
+    <string name="phone"> Số điện thoại </string>
+    <string name="bỉthday"> Ngày Sinh </string>
+    <string name="email"> Email </string>
+    <string name="first_name"> Họ và tên </string>
+    <string name="password"> Mật khẩu </string>
+    <string name="policy"> Bằng cách tiếp tục, bạn chấp nhận Chính sách Bảo mật và Điều khoản Sử dụng của chúng tôi. </string>
+    <string name="title_policy"> CHÍNH SÁCH BẢO MẬT </string>
+    <string name="register"> Đăng Ký </string>
+    <string name="login"> Đăng Nhập </string>
+    <string name="forget_password"> quên mật khẩu </string>
+</resources>
