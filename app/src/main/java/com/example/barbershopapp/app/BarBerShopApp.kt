@@ -6,7 +6,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.barbershopapp.Screen.MyApp
+import com.example.barbershopapp.Screen.HomeScreen
+import com.example.barbershopapp.Screen.User.MyApp
 import com.example.barbershopapp.auth.LoginScreen
 import com.example.barbershopapp.auth.PolicyScreen
 import com.example.barbershopapp.auth.RegisterScreen
@@ -35,6 +36,9 @@ fun BarBerShopApp() {
                 }
                 is Screen.LoginScreen -> {
                    LoginScreen()
+                }
+                is Screen.HomeScreen -> {
+                    HomeScreen()
                 }
             }
         }

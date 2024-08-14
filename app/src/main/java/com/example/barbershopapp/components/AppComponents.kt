@@ -2,14 +2,19 @@ package com.example.barbershopapp.components
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,11 +26,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
@@ -42,8 +49,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -58,7 +63,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.barbershopapp.R
+import androidx.compose.ui.window.Dialog
 import com.example.barbershopapp.ui.theme.BgColor
 import com.example.barbershopapp.ui.theme.GrayColor
 import com.example.barbershopapp.ui.theme.Primary
@@ -101,7 +106,9 @@ fun HeadingTextComponent(value: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTextFieldComponent(
-    labelValue: String, painterResource: Painter
+    labelValue: String, painterResource: Painter,
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
 ) {
     val textValue = remember { mutableStateOf("") }
     val localFocusManager = LocalFocusManager.current
@@ -123,21 +130,55 @@ fun MyTextFieldComponent(
         value = textValue.value,
         onValueChange = {
             textValue.value = it
+            onTextSelected(it)
         },
         leadingIcon = {
             Icon(painter = painterResource, contentDescription = "")
-        })
-}
+        },
+        isError = !errorStatus)
 
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PhoneFieldComponent(
+    labelValue: String, painterResource: Painter,
+    onTextSelected: (Int?) -> Unit,
+    errorStatus: Boolean = false
+) {
+    val textValue = remember { mutableStateOf("") }
+    val localFocusManager = LocalFocusManager.current
+
+    OutlinedTextField(modifier = Modifier
+        .fillMaxWidth()
+        .clip(Shape.small),
+        label = { Text(text = labelValue) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Primary,
+            focusedLabelColor = Primary,
+            cursorColor = Primary,
+            containerColor = BgColor
+
+        ),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Number),
+        singleLine = true,
+        maxLines = 1,
+        value = textValue.value,
+        onValueChange = {
+            textValue.value = it
+            onTextSelected(it.toIntOrNull()) // Chuyển đổi giá trị nhập vào thành Int? và truyền cho onTextSelected
+        },
+        leadingIcon = {
+            Icon(painter = painterResource, contentDescription = "")
+        },
+        isError = !errorStatus)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MailTextFieldComponent(
-    labelValue: String, painterResource: Painter
+    labelValue: String, painterResource: Painter,
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
 ) {
     val textValue = remember { mutableStateOf("") }
     val localFocusManager = LocalFocusManager.current
@@ -159,23 +200,32 @@ fun MailTextFieldComponent(
         value = textValue.value,
         onValueChange = {
             textValue.value = it
+            onTextSelected(it)
         },
         leadingIcon = {
             Icon(painter = painterResource, contentDescription = "")
-        })
+        },
+        isError = !errorStatus)
 }
 
+fun convertMillisToDate(millis: Long): String {
+    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    return formatter.format(Date(millis))
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerDocked(labelValue: String, painterResource: Painter) {
+fun DatePickerDocked(
+    labelValue: String,
+    painterResource: Painter,
+    onDateChanged: (Date?) -> Unit,
+    errorStatus: Boolean = false
+) {
     var showDatePicker by remember { mutableStateOf(false) }
+    var selectedDate by remember { mutableStateOf<Date?>(null) }
     val datePickerState = rememberDatePickerState()
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
-    } ?: ""
 
     OutlinedTextField(
-        value = selectedDate,
+        value = selectedDate?.let { convertMillisToDate(it.time) } ?: "",
         onValueChange = { },
         label = { Text(text = labelValue) },
         readOnly = true,
@@ -187,38 +237,55 @@ fun DatePickerDocked(labelValue: String, painterResource: Painter) {
                 )
             }
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(64.dp)
+        modifier = Modifier.fillMaxWidth(),
+        isError = !errorStatus
     )
 
     if (showDatePicker) {
-        AlertDialog(
-            onDismissRequest = { showDatePicker = false },
-            confirmButton = {
-                TextButton(onClick = { showDatePicker = false }) {
-                    Text("OK")
-                }
+        DatePickerModal(
+            onDateSelected = { millis ->
+                selectedDate = millis?.let { Date(it) }
+                onDateChanged(selectedDate)
             },
-            dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) {
-                    Text("Cancel")
-                }
-            },
-            text = {
-                DatePicker(
-                    state = datePickerState,
-                    showModeToggle = false
-                )
-            }
+            onDismiss = { showDatePicker = false }
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun DatePickerModal(
+    onDateSelected: (Long?) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val datePickerState = rememberDatePickerState()
+
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = {
+                onDateSelected(datePickerState.selectedDateMillis)
+                onDismiss()
+            }) {
+                Text("OK")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    ) {
+        DatePicker(state = datePickerState)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun PasswordFieldComponent(
-    labelValue: String, painterResource: Painter
+    labelValue: String, painterResource: Painter,
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
 ) {
     val password = remember { mutableStateOf("") }
     val passwordVisible = remember { mutableStateOf(false) }
@@ -243,6 +310,7 @@ fun PasswordFieldComponent(
         value = password.value,
         onValueChange = {
             password.value = it
+            onTextSelected(it)
         },
         leadingIcon = {
             Icon(painter = painterResource, contentDescription = "")
@@ -263,7 +331,8 @@ fun PasswordFieldComponent(
                 Icon(imageVector = image, description)
             }
         },
-        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+        isError = !errorStatus
     )
 }
 
@@ -271,7 +340,7 @@ fun PasswordFieldComponent(
 fun CheckboxComponent(
     value: String,
     onTextSelected: (String) -> Unit,
-//    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -287,6 +356,7 @@ fun CheckboxComponent(
         Checkbox(checked = checkedState.value,
             onCheckedChange = {
                 checkedState.value = !checkedState.value
+                onCheckedChange.invoke(it)
 
             })
 
@@ -329,17 +399,18 @@ fun ClickableTextComponent(value: String , onTextSelected : (String) -> Unit) {
     })
 }
 @Composable
-fun ButtonComponent(value: String) {
+fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boolean = false ) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
         onClick = {
-
+            onButtonClicked.invoke()
         },
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
         shape = RoundedCornerShape(50.dp),
+        enabled = isEnabled
     ) {
         Box(
             modifier = Modifier

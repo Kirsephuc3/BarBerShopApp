@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.barbershopapp.R
 import com.example.barbershopapp.components.ButtonComponent
 import com.example.barbershopapp.components.CheckboxComponent
@@ -26,12 +27,19 @@ import com.example.barbershopapp.components.MailTextFieldComponent
 import com.example.barbershopapp.components.MyTextFieldComponent
 import com.example.barbershopapp.components.NormalTextComponent
 import com.example.barbershopapp.components.PasswordFieldComponent
+import com.example.barbershopapp.components.PhoneFieldComponent
+import com.example.barbershopapp.data.register.RegisterUIEvent
+import com.example.barbershopapp.data.register.RegisterViewModel
 import com.example.barbershopapp.navigation.BackButtonHandler
 import com.example.barbershopapp.navigation.BarBerShopAppRoute
 import com.example.barbershopapp.navigation.Screen
+import java.util.Date
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(
+    RegisterViewModel: RegisterViewModel = viewModel()
+
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -51,30 +59,59 @@ fun RegisterScreen() {
                 Spacer(modifier = Modifier.height(20.dp))
                 MyTextFieldComponent(
                     labelValue = stringResource(id = R.string.first_name),
-                    painterResource = painterResource(id = R.drawable.person)
+                    painterResource = painterResource(id = R.drawable.person),
+                    onTextSelected = {
+                        RegisterViewModel.onEvent(RegisterUIEvent.NameChanged(it))
+                    },
+                    errorStatus = RegisterViewModel.registrationUIState.value.nameError
                 )
                 MailTextFieldComponent(
                     labelValue = stringResource(id = R.string.email),
-                    painterResource = painterResource(id = R.drawable.mail)
+                    painterResource = painterResource(id = R.drawable.mail),
+                    onTextSelected = {
+                        RegisterViewModel.onEvent(RegisterUIEvent.EmailChanged(it))
+                    },
+                    errorStatus = RegisterViewModel.registrationUIState.value.emailError
                 )
-                MyTextFieldComponent(
+                PhoneFieldComponent(
                     labelValue = stringResource(id = R.string.phone),
-                    painterResource = painterResource(id = R.drawable.phone)
+                    painterResource = painterResource(id = R.drawable.phone),
+                    onTextSelected = {
+                        RegisterViewModel.onEvent(RegisterUIEvent.PhoneChanged(it ?: 0))
+                    },
+                    errorStatus = RegisterViewModel.registrationUIState.value.phoneError
                 )
                 DatePickerDocked(
                     labelValue = stringResource(id = R.string.bỉthday),
-                    painterResource = painterResource(id = R.drawable.date)
+                    painterResource = painterResource(id = R.drawable.date),
+                    onDateChanged = { date ->
+                        RegisterViewModel.onEvent(RegisterUIEvent.DateChanged(date ?: Date()))
+                    },
+                    errorStatus = RegisterViewModel.registrationUIState.value.dateError
                 )
                 PasswordFieldComponent(
                     labelValue = stringResource(id = R.string.password),
-                    painterResource = painterResource(id = R.drawable.lock)
+                    painterResource = painterResource(id = R.drawable.lock),
+                    onTextSelected = {
+                        RegisterViewModel.onEvent(RegisterUIEvent.PasswordChanged(it))
+                    },
+                    errorStatus = RegisterViewModel.registrationUIState.value.passwordError
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                CheckboxComponent(value = stringResource(id = R.string.policy), onTextSelected = {
-                    BarBerShopAppRoute.navigateTo(Screen.PolicyScreen)
-                })
+                CheckboxComponent(
+                    value = stringResource(id = R.string.policy),
+                    onTextSelected = {
+                        BarBerShopAppRoute.navigateTo(Screen.PolicyScreen)
+                    }, onCheckedChange = {
+                        RegisterViewModel.onEvent(RegisterUIEvent.PrivacyPolicyCheckBoxClicked(it))
+                    }
+                )
                 Spacer(modifier = Modifier.height(70.dp))
-                ButtonComponent(value = stringResource(id = R.string.register))
+                ButtonComponent(value = stringResource(id = R.string.register),
+                    onButtonClicked = {
+                        RegisterViewModel.onEvent(RegisterUIEvent.RegisterButtonClicked)
+                },
+                    isEnabled = RegisterViewModel.allValidationsPassed.value)
                 Spacer(modifier = Modifier.height(20.dp))
                 DividerTextComponent()
                 Spacer(modifier = Modifier.height(20.dp))
@@ -83,9 +120,9 @@ fun RegisterScreen() {
                 })
             }
         }
-        BackButtonHandler {
-            BarBerShopAppRoute.navigateTo(Screen.SliderScreen)
-        }
+//        BackButtonHandler {
+//            BarBerShopAppRoute.navigateTo(Screen.SliderScreen)
+//        }
     }
 }
 

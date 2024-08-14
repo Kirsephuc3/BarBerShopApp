@@ -11,6 +11,8 @@ sealed class Screen {
     object LoginScreen : Screen()
     object SliderScreen : Screen()
 
+    object HomeScreen : Screen()
+
 }
 
 object BarBerShopAppRoute {
