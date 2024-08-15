@@ -42,4 +42,9 @@
         ngày giờ bạn sử dụng Dịch vụ và các số liệu thống kê khác .</string>
     <string name="policy_paragraph_4">Nếu bạn có bất kỳ câu hỏi hoặc đề xuất nào về Chính sách Bảo mật của chúng tôi,
         vui lòng liên hệ với chúng tôi theo địa chỉ thinh@ou.edu.vn</string>
+    <string name="logout">Logout</string>
+    <string name="menu">Menu</string>
+    <string name="navigation_header">App Drawer</string>
+    <string name="booking">Đặt lịch giữ chỗ</string>
+    <string name="city">Chọn thành phố</string>
 </resources>

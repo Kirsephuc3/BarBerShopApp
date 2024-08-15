@@ -5,7 +5,6 @@ import Validator
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.barbershopapp.BarBerShopApp
 import com.example.barbershopapp.data.RegisteUIState
 import com.example.barbershopapp.navigation.BarBerShopAppRoute
 import com.example.barbershopapp.navigation.Screen
@@ -156,7 +155,8 @@ class RegisterViewModel : ViewModel() {
             "name" to registrationUIState.value.name,
             "email" to registrationUIState.value.email,
             "phone" to registrationUIState.value.phone,
-            "birthday" to registrationUIState.value.birthday?.toString(), // Chuyển đổi Date thành String
+            "birthday" to registrationUIState.value.birthday?.toString(),
+            "password" to registrationUIState.value.password,
             "privacyPolicyAccepted" to registrationUIState.value.privacyPolicyAccepted
         )
 

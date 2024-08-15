@@ -2,40 +2,39 @@ package com.example.barbershopapp.components
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -63,7 +62,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import com.example.barbershopapp.ui.theme.BgColor
 import com.example.barbershopapp.ui.theme.GrayColor
 import com.example.barbershopapp.ui.theme.Primary
@@ -113,9 +111,10 @@ fun MyTextFieldComponent(
     val textValue = remember { mutableStateOf("") }
     val localFocusManager = LocalFocusManager.current
 
-    OutlinedTextField(modifier = Modifier
-        .fillMaxWidth()
-        .clip(Shape.small),
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(Shape.small),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Primary,
@@ -135,9 +134,11 @@ fun MyTextFieldComponent(
         leadingIcon = {
             Icon(painter = painterResource, contentDescription = "")
         },
-        isError = !errorStatus)
+        isError = !errorStatus
+    )
 
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhoneFieldComponent(
@@ -148,9 +149,10 @@ fun PhoneFieldComponent(
     val textValue = remember { mutableStateOf("") }
     val localFocusManager = LocalFocusManager.current
 
-    OutlinedTextField(modifier = Modifier
-        .fillMaxWidth()
-        .clip(Shape.small),
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(Shape.small),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Primary,
@@ -159,7 +161,10 @@ fun PhoneFieldComponent(
             containerColor = BgColor
 
         ),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next,
+            keyboardType = KeyboardType.Number
+        ),
         singleLine = true,
         maxLines = 1,
         value = textValue.value,
@@ -170,7 +175,8 @@ fun PhoneFieldComponent(
         leadingIcon = {
             Icon(painter = painterResource, contentDescription = "")
         },
-        isError = !errorStatus)
+        isError = !errorStatus
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -183,9 +189,10 @@ fun MailTextFieldComponent(
     val textValue = remember { mutableStateOf("") }
     val localFocusManager = LocalFocusManager.current
 
-    OutlinedTextField(modifier = Modifier
-        .fillMaxWidth()
-        .clip(Shape.small),
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(Shape.small),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Primary,
@@ -205,13 +212,15 @@ fun MailTextFieldComponent(
         leadingIcon = {
             Icon(painter = painterResource, contentDescription = "")
         },
-        isError = !errorStatus)
+        isError = !errorStatus
+    )
 }
 
 fun convertMillisToDate(millis: Long): String {
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return formatter.format(Date(millis))
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDocked(
@@ -365,7 +374,7 @@ fun CheckboxComponent(
 }
 
 @Composable
-fun ClickableTextComponent(value: String , onTextSelected : (String) -> Unit) {
+fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
     val initialText = "Bằng cách tiếp tục, bạn chấp nhận "
     val privacyPolicyText = "Chính sách Bảo mật"
     val andText = " và "
@@ -398,8 +407,9 @@ fun ClickableTextComponent(value: String , onTextSelected : (String) -> Unit) {
             }
     })
 }
+
 @Composable
-fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boolean = false ) {
+fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boolean = false) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -433,6 +443,7 @@ fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boole
 
     }
 }
+
 @Composable
 fun DividerTextComponent() {
     Row(
@@ -464,6 +475,7 @@ fun DividerTextComponent() {
         )
     }
 }
+
 @Composable
 fun ClickableLoginTextComponent(tryingToLogin: Boolean = true, onTextSelected: (String) -> Unit) {
     val initialText =
@@ -503,6 +515,7 @@ fun ClickableLoginTextComponent(tryingToLogin: Boolean = true, onTextSelected: (
         },
     )
 }
+
 @Composable
 fun UnderLinedTextComponent(value: String) {
     Text(
@@ -520,4 +533,89 @@ fun UnderLinedTextComponent(value: String) {
         textDecoration = TextDecoration.Underline
     )
 
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppToolbar(
+    toolbarTitle: String,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+    onNavigationIconClicked: () -> Unit = {}
+) {
+    TopAppBar(
+        title = {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    fontSize = 22.sp,
+                    text = toolbarTitle,
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    color = Primary,
+                    textAlign = TextAlign.Center
+                )
+            }
+        },
+        navigationIcon = {
+            if (navigationIcon != null) {
+                IconButton(onClick = {
+                    onNavigationIconClicked.invoke()
+                }) {
+                    navigationIcon()
+                }
+            }
+        },
+        actions = actions,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = GrayColor
+        )
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DynamicSelectTextField(
+    selectedValue: String?,
+    options: List<String>,
+    label: String,
+    onValueChangedEvent: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var displayText by remember { mutableStateOf("Chọn thành phố") }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            readOnly = true,
+            value = selectedValue ?: displayText,
+            onValueChange = {},
+            label = { Text(text = label) },  // Hiển thị label "City"
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
+            colors = OutlinedTextFieldDefaults.colors(),
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth()
+        )
+
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            options.forEach { option: String ->
+                DropdownMenuItem(
+                    text = { Text(text = option) },
+                    onClick = {
+                        expanded = false
+                        displayText = option
+                        onValueChangedEvent(option)
+                    }
+                )
+            }
+        }
+    }
 }
