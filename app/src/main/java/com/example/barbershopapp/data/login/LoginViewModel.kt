@@ -7,6 +7,7 @@ import com.example.barbershopapp.app.BarBerShopApp
 import com.example.barbershopapp.navigation.BarBerShopAppRoute
 import com.example.barbershopapp.navigation.Screen
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginViewModel : ViewModel()  {
     private val TAG = LoginViewModel::class.simpleName
@@ -69,6 +70,7 @@ class LoginViewModel : ViewModel()  {
             }
 
     }
+
 
     private fun validateData() {
         val passwordResult = Validator.validatePassword(

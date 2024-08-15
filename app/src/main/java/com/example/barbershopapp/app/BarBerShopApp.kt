@@ -6,8 +6,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.barbershopapp.Screen.HomeScreen
+import com.example.barbershopapp.Screen.Profile.ProfileScreen
+import com.example.barbershopapp.Screen.History.HistoryScreen
+import com.example.barbershopapp.Screen.Stylist.StylistScreen
+import com.example.barbershopapp.Screen.Booking.BookScreen
 import com.example.barbershopapp.Screen.User.MyApp
+import com.example.barbershopapp.Screen.user.UserHomeScreen
 import com.example.barbershopapp.auth.LoginScreen
 import com.example.barbershopapp.auth.PolicyScreen
 import com.example.barbershopapp.auth.RegisterScreen
@@ -38,7 +42,19 @@ fun BarBerShopApp() {
                    LoginScreen()
                 }
                 is Screen.HomeScreen -> {
-                    HomeScreen()
+                    UserHomeScreen()
+                }
+                is Screen.ProfileScreen -> {
+                    ProfileScreen()
+                }
+                is Screen.HistoryScreen -> {
+                    HistoryScreen()
+                }
+                is Screen.StylistScreen -> {
+                    StylistScreen()
+                }
+                is Screen.BookScreen -> {
+                    BookScreen()
                 }
             }
         }

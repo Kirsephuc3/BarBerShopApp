@@ -10,6 +10,7 @@ import com.example.barbershopapp.navigation.BarBerShopAppRoute
 import com.example.barbershopapp.navigation.Screen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterViewModel : ViewModel() {
     private val TAG = RegisterViewModel::class.simpleName
@@ -148,8 +149,8 @@ class RegisterViewModel : ViewModel() {
             }
     }
     private fun saveUserToDatabase(userId: String) {
-        val database = FirebaseDatabase.getInstance()
-        val userRef = database.getReference("users").child(userId)
+        val database = FirebaseFirestore.getInstance()
+        val userRef = database.collection("users").document(userId)
 
         val user = mapOf(
             "name" to registrationUIState.value.name,
@@ -160,7 +161,7 @@ class RegisterViewModel : ViewModel() {
             "privacyPolicyAccepted" to registrationUIState.value.privacyPolicyAccepted
         )
 
-        userRef.setValue(user)
+        userRef.set(user)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User data saved successfully")

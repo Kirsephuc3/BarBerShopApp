@@ -10,9 +10,11 @@ sealed class Screen {
     object PolicyScreen : Screen()
     object LoginScreen : Screen()
     object SliderScreen : Screen()
-
     object HomeScreen : Screen()
-
+    object ProfileScreen : Screen()
+    object HistoryScreen : Screen()
+    object StylistScreen : Screen()
+    object BookScreen : Screen()
 }
 
 object BarBerShopAppRoute {
