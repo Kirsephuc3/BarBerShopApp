@@ -47,4 +47,5 @@
     <string name="navigation_header">App Drawer</string>
     <string name="booking">Đặt lịch giữ chỗ</string>
     <string name="city">Chọn thành phố</string>
+    <string name="stylist">Chọn stylist</string>
 </resources>

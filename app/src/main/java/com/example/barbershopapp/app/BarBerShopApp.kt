@@ -11,7 +11,7 @@ import com.example.barbershopapp.Screen.History.HistoryScreen
 import com.example.barbershopapp.Screen.Stylist.StylistScreen
 import com.example.barbershopapp.Screen.Booking.BookScreen
 import com.example.barbershopapp.Screen.User.MyApp
-import com.example.barbershopapp.Screen.user.UserHomeScreen
+import com.example.barbershopapp.Screen.UserHomeScreen
 import com.example.barbershopapp.auth.LoginScreen
 import com.example.barbershopapp.auth.PolicyScreen
 import com.example.barbershopapp.auth.RegisterScreen

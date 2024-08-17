@@ -1,4 +1,4 @@
-package com.example.barbershopapp.Screen.user
+package com.example.barbershopapp.Screen
 
 import android.app.Service
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +47,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.barbershopapp.data.firebase.AuthRepo
 import com.example.barbershopapp.data.firebase.AuthViewModel
 import com.example.barbershopapp.data.firebase.AuthViewModelFactory
+import com.example.barbershopapp.data.firebase.CityRepo
+import com.example.barbershopapp.data.firebase.StylistRepo
 import com.example.barbershopapp.data.user.UserViewModel
 import com.example.barbershopapp.navigation.BarBerShopAppRoute
 import com.example.barbershopapp.navigation.Screen
@@ -277,8 +279,10 @@ fun BodyContent() {
 @Composable
 fun UserHomeScreen() {
     val authRepo = AuthRepo()
+    val cityRepo = CityRepo()
+    val stylistRepo = StylistRepo()
     val authViewModel: AuthViewModel = viewModel(
-        factory = AuthViewModelFactory(authRepo)
+        factory = AuthViewModelFactory(authRepo,cityRepo, stylistRepo)
     )
 
     val user by authViewModel.user.collectAsState()
